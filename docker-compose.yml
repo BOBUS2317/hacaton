@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  # MQTT брокер (Eclipse Mosquitto)
+  mqtt-broker:
+    image: eclipse-mosquitto:2.0.18
+    container_name: mqtt-broker
+    ports:
+      - "1883:1883"  # MQTT port
+      - "9001:9001"  # WebSocket port
+    volumes:
+      - ./mosquitto/config:/mosquitto/config
+      - ./mosquitto/data:/mosquitto/data
+      - ./mosquitto/log:/mosquitto/log
+    environment:
+      - MOSQUITTO_USERNAME=
+      - MOSQUITTO_PASSWORD=
+    restart: unless-stopped
+    networks:
+      - iot-network
+
+  # FastAPI приложение
+  web-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: iotik32-controller
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mqtt-broker
+    environment:
+      - MQTT_BROKER=mqtt-broker
+      - MQTT_PORT=1883
+    volumes:
+      - ./app:/app/app:ro
+      - ./static:/app/static:ro
+    restart: unless-stopped
+    networks:
+      - iot-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  iot-network:
+    # driver: bridge
+    # ipam:
+    #   config:
+    #     - subnet: 172.20.0.0/16
+
+volumes:
+  mosquitto-data:
+  mosquitto-log:
