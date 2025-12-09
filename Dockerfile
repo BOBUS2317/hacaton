@@ -7,4 +7,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-CMD ["fastapi", "run", "app/main.py", "--port", "8000"]
+CMD ["gunicorn", "-b", "0.0.0.0:8000", "app.main:app"]

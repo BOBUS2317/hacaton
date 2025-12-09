@@ -1,4 +1,6 @@
-fastapi[standard]
 paho-mqtt
 jinja2
 python-multipart
+Flask
+gunicorn
+Flask-SQLAlchemy
