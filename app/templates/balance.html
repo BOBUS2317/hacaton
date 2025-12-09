@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+<head>
+    <title>Возможные операции</title>
+    <style>
+        body {
+            background: #2ecc71;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: white;
+            text-align: center;
+        }
+
+        .password-form {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            width: 400px;
+        }
+
+        .welcome-text {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            color: #333;
+            text-align: center;
+        }
+
+
+        .buttons-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px; /* Отступ между кнопками */
+        }
+
+
+        .login-btn {
+            display: block;
+            background: #95a5a6; /* Зеленый цвет */
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .login-btn:hover {
+            background: #7f8c8d;
+            transform: translateY(-2px);
+            text-decoration: none;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+
+        }
+        .login-bth:active {
+            background: #6c7b7d;
+        }
+
+
+        .submit-btn {
+            display: block;
+            background: #95a5a6; /* Серый цвет */
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background: #7f8c8d;
+            transform: translateY(-2px);
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div class="password-form">
+        <div class="form-title">Ваш баланс</div>
+
+
+    <div class="welcome-text">Баланс: </div>
+    <div class="welcome-text"> {{ balance }} Рублей</div>
+    <a href="{{ url_for('function') }}" class="login-btn">НАЗАД</a>
+</div>
+</body>
+</html>

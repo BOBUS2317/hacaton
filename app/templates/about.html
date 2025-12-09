@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+<head>
+    <title>Ввод пароля</title>
+    <style>
+        body {
+            background: #2ecc71;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .password-form {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+            width: 300px;
+        }
+        .form-title {
+            font-size: 24px;
+            margin-bottom: 30px;
+            color: #333;
+        }
+        .password-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+        .password-input:focus {
+            border-color: #2ecc71;
+            outline: none;
+        }
+
+
+        .buttons-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .submit-btn {
+            background: #2ecc71;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+
+        .submit-btn:hover {
+            background: #27ae60;
+            transform: translateY(-2px); /* Поднимаем на 2px вверх */
+            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+        }
+
+
+        .submit-btn:active {
+            transform: translateY(1px); /* Опускаем на 1px вниз */
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+
+        .back-btn {
+            background: #95a5a6;
+        }
+        .back-btn:hover {
+            background: #7f8c8d;
+        }
+        .back-btn:active {
+            background: #6c7b7d;
+        }
+    </style>
+</head>
+<body>
+    <div class="password-form">
+        <div class="form-title">Введите пароль</div>
+        <input type="password" class="password-input" placeholder="Введите ваш пароль">
+
+        <div class="buttons-container">
+            <button class="submit-btn" onclick="window.location.href='{{ url_for('function') }}'">ПРОДОЛЖИТЬ</button>
+            <button class="submit-btn back-btn" onclick="window.location.href='{{ url_for('base') }}'">НАЗАД</button>
+        </div>
+    </div>
+</body>
+</html>

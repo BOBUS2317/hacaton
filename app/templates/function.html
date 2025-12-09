@@ -1,0 +1,158 @@
+<!doctype html>
+<html>
+<head>
+    <title>Возможные операции</title>
+    <style>
+        body {
+            background: #2ecc71; /* Зеленый фон */
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: white;
+            text-align: center;
+        }
+
+        .password-form {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            width: 400px;
+        }
+
+        .welcome-text {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            color: #333;
+            text-align: center;
+        }
+
+        .buttons-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px; /* Отступ между кнопками */
+        }
+
+        .login-btn {
+            display: block;
+            background: #2ecc71; /* Зеленый цвет */
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            text-decoration: none; /* Убираем подчеркивание у ссылок */
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .login-btn:hover {
+            background: #27ae60;
+            transform: translateY(-2px);
+            text-decoration: none;
+        }
+
+        .submit-btn {
+            display: block;
+            background: #95a5a6; /* Серый цвет */
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background: #7f8c8d;
+            transform: translateY(-2px);
+            text-decoration: none;
+        }
+
+        /* Стили для лога */
+        .log {
+            margin-top: 20px;
+            max-height: 150px;
+            overflow-y: auto;
+            font-size: 14px;
+            text-align: left;
+            color: #333;
+        }
+
+        .msg {
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin-bottom: 4px;
+        }
+
+        .msg.ok {
+            background: #e8f8f5;
+        }
+
+        .msg.err {
+            background: #fdecea;
+            color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <div class="password-form">
+        <div class="welcome-text">Выберите операцию:</div>
+        <div class="buttons-container">
+            <!-- добавлены data-btn, чтобы скрипт понимал, какую кнопку нажали -->
+            <a href="{{ url_for('balance') }}" class="login-btn" >Узнать баланс</a>
+            <a href="{{ url_for('get_money') }}" class="login-btn" >Снять деньги</a>
+            <a href="{{ url_for('put_money') }}" class="login-btn" data-btn="refill">Положить деньги</a>
+            <a href="{{ url_for('base') }}" class="submit-btn" data-btn="end_work">НАЗАД</a>
+        </div>
+
+    </div>
+
+    <script>
+
+
+        async function send(button) {
+            try {
+                const res = await fetch('/publish', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ button })
+                });
+
+                const data = await res.json().catch(() => ({}));
+            } catch (e) {
+                throw e;
+            }
+        }
+
+        // Вешаем обработчики на все ссылки с data-btn
+        document.querySelectorAll('a[data-btn]').forEach(link => {
+            link.addEventListener('click', event => {
+                event.preventDefault(); // чтобы не уйти со страницы сразу
+
+                const button = link.dataset.btn;
+
+                send(button).finally(() => {
+                    // после отправки можно переходить по ссылке
+                    window.location.href = link.href;
+                });
+            });
+        });
+    </script>
+</body>
+</html>

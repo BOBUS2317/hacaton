@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8">
+    <title>MQTT Кнопки</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        :root {
+            color-scheme: light dark;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+            margin: 2rem;
+        }
+
+        h1 {
+            margin: 0 0 1rem;
+        }
+
+        .topic {
+            font-size: 0.95rem;
+            opacity: 0.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(120px, 1fr));
+            gap: 1rem;
+            max-width: 560px;
+        }
+
+        button {
+            padding: 1rem;
+            border: 0;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform .05s ease, filter .15s ease;
+            color: #fff;
+        }
+
+        button:active {
+            transform: translateY(1px);
+            filter: brightness(0.95);
+        }
+
+        .b1 {
+            background: #2563eb;
+        }
+
+        .b2 {
+            background: #16a34a;
+        }
+
+        .b3 {
+            background: #ea580c;
+        }
+
+        .log {
+            margin-top: 1.25rem;
+            max-width: 680px;
+        }
+
+        .msg {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font-size: .95rem;
+            padding: .5rem .75rem;
+            border-radius: 8px;
+            margin-bottom: .5rem;
+        }
+
+        .ok {
+            background: rgba(16, 185, 129, .15);
+        }
+
+        .err {
+            background: rgba(239, 68, 68, .15);
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Отправка сообщений в MQTT</h1>
+    <div class="topic">Топик: <strong>{{ mqtt_topic }}</strong></div>
+
+    <div class="grid">
+        <button class="b1" data-btn="button1">Кнопка 1</button>
+        <button class="b2" data-btn="button2">Кнопка 2</button>
+        <button class="b3" data-btn="button3">Кнопка 3</button>
+    </div>
+
+    <div class="log" id="log" aria-live="polite"></div>
+
+    <script>
+        const log = document.getElementById('log');
+
+        function addLog(text, ok = true) {
+            const div = document.createElement('div');
+            div.className = 'msg ' + (ok ? 'ok' : 'err');
+            const ts = new Date().toLocaleTimeString();
+            div.textContent = `[${ts}] ${text}`;
+            log.prepend(div);
+        }
+
+        async function send(button) {
+            try {
+                const res = await fetch('/publish', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ button })
+                });
+
+                const data = await res.json().catch(() => ({}));
+                addLog(`Отправлено "${button}" в ${data.published_to || 'топик'}`);
+            } catch (e) {
+                addLog(`Ошибка при отправке: ${e.message}`, false);
+            }
+        }
+
+        document.querySelectorAll('button[data-btn]').forEach(btn => {
+            btn.addEventListener('click', () => send(btn.dataset.btn));
+        });
+    </script>
+</body>
+
+</html>
